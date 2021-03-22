@@ -1,48 +1,43 @@
 <?php
 
-namespace Block\Admin\CMSpage;
+namespace Block\Admin\Brand;
 
 \Mage::loadFileByClassName('Block\Core\Grid');
 class Grid extends \Block\Core\Grid
 {
     public function prepareCollection()
     {
-        $cmspage = \Mage::getModel('Model\CMSpage');
-        $collection = $cmspage->fetchAll();
+        $brand = \Mage::getModel('Model\Brand');
+        $collection = $brand->fetchAll();
         $this->setCollection($collection);
         return $this;
     }
 
     public function prepareColumns()
     {
-        $this->addColumn('id', [
-            'field' => 'id',
-            'label' => 'CMSpage Id',
+        $this->addColumn('brandId', [
+            'field' => 'brandId',
+            'label' => 'Brand Id',
             'type' => 'number'
         ]);
-        $this->addColumn('title', [
-            'field' => 'title',
-            'label' => 'CMSpage Title',
+        $this->addColumn('name', [
+            'field' => 'name',
+            'label' => 'Brand Name',
             'type' => 'text'
         ]);
-        $this->addColumn('identifier', [
-            'field' => 'identifier',
-            'label' => 'CMSpage Identifier',
-            'type' => 'text'
-        ]);
-        $this->addColumn('content', [
-            'field' => 'content',
-            'label' => 'CMSpage Content',
+        $this->addColumn('image', [
+            'field' => 'image',
+            'label' => 'Brand Image',
             'type' => 'text'
         ]);
         $this->addColumn('status', [
             'field' => 'status',
-            'label' => 'CMSpage Status',
+            'label' => 'Brand Status',
             'type' => 'text'
         ]);
         $this->addColumn('createdDate', [
             'field' => 'createdDate',
-            'label' => 'CMSpage CreatedDate',
+            'label' => 'Brand CreatedDate',
             'type' => 'datetime'
         ]);
         return $this;
@@ -68,13 +63,13 @@ class Grid extends \Block\Core\Grid
 
     public function getEditUrl($row)
     {
-        $url = $this->getUrl()->getUrl('edit', null, ['id' => $row->id]);
+        $url = $this->getUrl()->getUrl('edit', null, ['brandId' => $row->brandId]);
         return "object.setUrl('{$url}').load()";
     }
 
     public function getDeleteUrl($row)
     {
-        $url = $this->getUrl()->getUrl('delete', null, ['id' => $row->id]);
+        $url = $this->getUrl()->getUrl('delete', null, ['brandId' => $row->brandId]);
         return "object.setUrl('{$url}').removeParam().load()";
     }
 

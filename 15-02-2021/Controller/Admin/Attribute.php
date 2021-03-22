@@ -124,4 +124,24 @@ class Attribute extends \Controller\Core\Admin
             $this->redirect('grid');
         }
     }
+
+    public function filterAction()
+    {
+        $filters = $this->getRequest()->getPost('filter');
+        $filterModel = \Mage::getModel('Model\Admin\Filter');
+        $filterModel->setFilter($filters);
+
+        $gridhtml = \Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
+        $response = [
+            'status' => 'success',
+            'message' => 'mihir',
+            'element' => [
+
+                'selector' => '#contentHtml',
+                'html' => $gridhtml
+            ]
+        ];
+        header("Content-type: application/json charset=utf-8");
+        echo json_encode($response);
+    }
 }

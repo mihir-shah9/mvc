@@ -2,36 +2,100 @@
 
 namespace Block\Admin\Category;
 
-\Mage::loadFileByClassName('Block\Core\Template');
+\Mage::loadFileByClassName('Block\Core\Grid');
 \Mage::loadFileByClassName('Controller\Admin\Category');
-class Grid extends \Block\Core\Template
+class Grid extends \Block\Core\Grid
 {
-    protected $categories = [];
-    protected $categoryOptions = [];
-
-    public function __construct()
+    public function prepareCollection()
     {
-        parent::__construct();
-        $this->setTemplate('./View/Admin/category/grid.php');
+        $category = \Mage::getModel('Model\Category');
+        $collection = $category->fetchAll();
+        $this->setCollection($collection);
+        return $this;
     }
 
-    public function setCategories($categories = null)
+    public function prepareColumns()
     {
-        if (!$categories) {
-            $category = \Mage::getModel('Model\Category');
-            $categories = $category->fetchAll();
-        }
-        $this->categories = $categories;
-        return $this->categories;
+        $this->addColumn('id', [
+            'field' => 'id',
+            'label' => 'Category Id',
+            'type' => 'number'
+        ]);
+        $this->addColumn('parentId', [
+            'field' => 'parentId',
+            'label' => 'Category ParentId',
+            'type' => 'text'
+        ]);
+        $this->addColumn('pathId', [
+            'field' => 'pathId',
+            'label' => 'Category PathId',
+            'type' => 'text'
+        ]);
+        $this->addColumn('name', [
+            'field' => 'name',
+            'label' => 'Category Name',
+            'type' => 'text'
+        ]);
+        $this->addColumn('status', [
+            'field' => 'status',
+            'label' => 'Category Status',
+            'type' => 'text'
+        ]);
+        $this->addColumn('description', [
+            'field' => 'description',
+            'label' => 'Category Description',
+            'type' => 'text'
+        ]);
+        return $this;
     }
 
-    public function getCategories()
+    public function prepareActions()
     {
-        if (!$this->categories) {
-            $this->setCategories();
-        }
-        return $this->categories;
+        $this->addActions('edit', [
+            'label' => 'Edit',
+            'method' => 'getEditUrl',
+            'class' => 'btn btn-danger btn-sm',
+            'ajax' => true
+        ]);
+
+        $this->addActions('delete', [
+            'label' => 'Delete',
+            'method' => 'getDeleteUrl',
+            'class' => 'btn btn-success btn-sm',
+            'ajax' => true
+        ]);
+        return $this;
     }
+
+    public function getEditUrl($row)
+    {
+        $url = $this->getUrl()->getUrl('edit', null, ['id' => $row->id]);
+        return "object.setUrl('{$url}').load()";
+    }
+
+    public function getDeleteUrl($row)
+    {
+        $url = $this->getUrl()->getUrl('delete', null, ['id' => $row->id]);
+        return "object.setUrl('{$url}').removeParam().load()";
+    }
+
+    public function prepareButtons()
+    {
+        $this->addButtons('addnew', [
+            'label' => 'Add New',
+            'method' => 'getAddNewUrl',
+            'ajax' => true
+        ]);
+        return $this;
+    }
+
+    public function getAddNewUrl()
+    {
+        $url = $this->getUrl()->getUrl('edit');
+        return "object.setUrl('{$url}').load()";
+    }
+
+
 
     public function getName($category)
     {

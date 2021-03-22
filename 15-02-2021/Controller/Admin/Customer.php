@@ -61,7 +61,7 @@ class Customer extends \Controller\Core\Admin
             $password = md5($customer->password);
             $customer->password = $password;
             $customerId = $customer->save();
-            $this->redirect('form', null, ['tab' => 'customer_address', 'Id' => $customerId], true);
+            $this->redirect('address', null, ['tab' => 'customer_address', 'Id' => $customerId], true);
         } catch (\Exception $e) {
             $message = $this->getMessage();
             $message->setFailure($e->getMessage());

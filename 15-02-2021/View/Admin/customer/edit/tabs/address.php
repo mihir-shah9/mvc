@@ -61,6 +61,6 @@
 
 <div class="row">
     <div class="col">
-        <button type="button" class="btn btn-success" style="margin-top: 15px;margin-bottom: 25px;" onclick="object.setForm(this).setUrl('<?php echo $this->getUrl()->getUrl('address', null, null, true); ?>?>').load();">Save</button>
+        <button type="button" class="btn btn-success" style="margin-top: 15px;margin-bottom: 25px;" onclick="object.setForm(this).setUrl('<?php echo $this->getUrl()->getUrl('grid', 'customer', null, true); ?>?>').load();">Save</button>
     </div>
 </div>

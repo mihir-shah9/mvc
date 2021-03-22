@@ -2,33 +2,85 @@
 
 namespace Block\Admin\Cgroup;
 
-\Mage::loadFileByClassName('Block\Core\Template');
-class Grid extends \Block\Core\Template
+\Mage::loadFileByClassName('Block\Core\Grid');
+class Grid extends \Block\Core\Grid
 {
-    protected $cgroups = [];
-
-    public function __construct()
+    public function prepareCollection()
     {
-        parent::__construct();
-        $this->setController(\Mage::getController('Controller\Core\Admin'));
-        $this->setTemplate('./View/Admin/cgroup/grid.php');
-    }
-
-    public function setCgroups($cgroups = null)
-    {
-        if (!$cgroups) {
-            $cgroup = \Mage::getModel('Model\Cgroup');
-            $cgroups = $cgroup->fetchAll();
-        }
-        $this->cgroups = $cgroups;
+        $cgroup = \Mage::getModel('Model\Cgroup');
+        $collection = $cgroup->fetchAll();
+        $this->setCollection($collection);
         return $this;
     }
 
-    public function getCgroups()
+    public function prepareColumns()
     {
-        if (!$this->cgroups) {
-            $this->setCgroups();
-        }
-        return $this->cgroups;
+        $this->addColumn('id', [
+            'field' => 'id',
+            'label' => 'CustomerGroup Id',
+            'type' => 'number'
+        ]);
+        $this->addColumn('name', [
+            'field' => 'name',
+            'label' => 'CustomerGroup Name',
+            'type' => 'number'
+        ]);
+        $this->addColumn('status', [
+            'field' => 'status',
+            'label' => 'CustomerGroup Status',
+            'type' => 'number'
+        ]);
+        $this->addColumn('createdDate', [
+            'field' => 'createdDate',
+            'label' => 'CustomerGroup CreatedDate',
+            'type' => 'number'
+        ]);
+        return $this;
+    }
+
+    public function prepareActions()
+    {
+        $this->addActions('edit', [
+            'label' => 'Edit',
+            'method' => 'getEditUrl',
+            'class' => 'btn btn-danger btn-sm',
+            'ajax' => true
+        ]);
+
+        $this->addActions('delete', [
+            'label' => 'Delete',
+            'method' => 'getDeleteUrl',
+            'class' => 'btn btn-success btn-sm',
+            'ajax' => true
+        ]);
+        return $this;
+    }
+
+    public function getEditUrl($row)
+    {
+        $url = $this->getUrl()->getUrl('edit', null, ['id' => $row->id]);
+        return "object.setUrl('{$url}').load()";
+    }
+
+    public function getDeleteUrl($row)
+    {
+        $url = $this->getUrl()->getUrl('delete', null, ['id' => $row->id]);
+        return "object.setUrl('{$url}').removeParam().load()";
+    }
+
+    public function prepareButtons()
+    {
+        $this->addButtons('addnew', [
+            'label' => 'Add New',
+            'method' => 'getAddNewUrl',
+            'ajax' => true
+        ]);
+        return $this;
+    }
+
+    public function getAddNewUrl()
+    {
+        $url = $this->getUrl()->getUrl('edit');
+        return "object.setUrl('{$url}').load()";
     }
 }
