@@ -60,8 +60,10 @@ class Customer extends \Controller\Core\Admin
             $customer->setData($customerData);
             $password = md5($customer->password);
             $customer->password = $password;
-            $customerId = $customer->save();
-            $this->redirect('address', null, ['tab' => 'customer_address', 'Id' => $customerId], true);
+            $customer->save();
+            $this->redirect('grid');
+
+            // $this->redirect('address', null, ['tab' => 'customer_address', 'Id' => $customerId], true);
         } catch (\Exception $e) {
             $message = $this->getMessage();
             $message->setFailure($e->getMessage());
@@ -122,30 +124,27 @@ class Customer extends \Controller\Core\Admin
     public function addressAction()
     {
         try {
-            if (!$this->getRequest()->isPost()) {
-                throw new \Exception("Invalid Request.");
-            }
+            $id = $this->getRequest()->getGet('id');
             $billing = \Mage::getModel('Model\Address');
-            if ($id = $this->getRequest()->getGet("addressId")) {
-                $billing = $billing->load($id);
-                if (!$billing) {
-                    throw new \Exception("Recoed Not Found.");
-                }
-            }
+            // if ($id) {
+            //     $billing = $billing->load($id);
+            //     if (!$billing) {
+            //         throw new \Exception("Recoed Not Found.");
+            //     }
+            // }
             $billingData = $this->getRequest()->getPost('billing');
             $billing->addressType = 'billing';
+            $billing->id = $id;
+            // \print_r($id);
+            // die();
             $billing->setData($billingData);
             $billing->save();
 
             $shipping = \Mage::getModel('Model\Address');
-            if ($id = $this->getRequest()->getGet("addressId")) {
-                $shipping = $shipping->load($id);
-                if (!$shipping) {
-                    throw new \Exception("Recoed Not Found.");
-                }
-            }
+
             $shippingData = $this->getRequest()->getPost('shipping');
             $shipping->addressType = 'shipping';
+            $shipping->id = $id;
             $shipping->setData($shippingData);
             $shipping->save();
 

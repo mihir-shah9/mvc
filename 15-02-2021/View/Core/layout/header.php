@@ -62,5 +62,9 @@
         <li class="nav-item">
             <a class="nav-link text-white" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('grid', 'brand', null, true); ?>').load();" href="javascript:void(0)"> Brand</a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white" onclick="object.setUrl('<?php echo $this->getUrl()->getUrl('grid', 'config_group', null, true); ?>').load();" href="javascript:void(0)"> config_group</a>
+        </li>
     </ul>
 </nav>

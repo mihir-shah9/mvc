@@ -9,9 +9,20 @@ class Table
     protected $primaryKey = 'id';
     protected $tableName = null;
     protected $data = [];
+    protected $originalData = [];
 
     public function __construct()
     {
+    }
+
+    public function setOriginalData($originalData)
+    {
+        $this->originalData = $originalData;
+        return $this;
+    }
+    public function getOriginalData()
+    {
+        return $this->originalData;
     }
 
     public function setAdapter()
@@ -58,6 +69,11 @@ class Table
     {
         return $this->data;
     }
+    public function resetData()
+    {
+        $this->data = [];
+        return $this;
+    }
 
 
     public function __set($key, $value)
@@ -67,10 +83,13 @@ class Table
     }
     public function __get($key)
     {
-        if (!array_key_exists($key, $this->data)) {
-            return null;
+        if (array_key_exists($key, $this->data)) {
+            return $this->data[$key];
         }
-        return $this->data[$key];
+        if (array_key_exists($key, $this->originalData)) {
+            return $this->originalData[$key];
+        }
+        return null;
     }
 
 

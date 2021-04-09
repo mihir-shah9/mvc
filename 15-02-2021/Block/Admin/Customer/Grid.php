@@ -105,6 +105,6 @@ class Grid extends \Block\Core\Grid
     public function getAddNewUrl()
     {
         $url = $this->getUrl()->getUrl('edit');
-        return "object.setUrl('{$url}').load()";
+        echo "object.setUrl('{$url}').load()";
     }
 }

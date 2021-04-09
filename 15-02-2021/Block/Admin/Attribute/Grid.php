@@ -10,16 +10,17 @@ class Grid extends \Block\Core\Grid
 
     public function prepareCollection()
     {
-        $adminSession = \Mage::getModel('Model\Admin\Session');
+        // $adminSession = \Mage::getModel('Model\Admin\Session');
         $attribute = \Mage::getModel('Model\Attribute');
         $query = "SELECT * FROM attribute";
+        // print_r($this->getFilter()->getFilters());
 
         if ($this->getFilter()->hasFilters()) {
             $query .= " WHERE 1 = 1";
             foreach ($this->getFilter()->getFilters() as $type => $filters) {
                 if ($type == 'text') {
                     foreach ($filters as $key => $value) {
-                        $query .= " AND (`{$key} ` LIKE '%{$value}%')";
+                        $query .= " AND (`{$key}` LIKE '%{$value}%')";
                     }
                 }
             }
@@ -121,13 +122,13 @@ class Grid extends \Block\Core\Grid
 
     public function getaddFilterUrl()
     {
-        $url = $this->getUrl()->getUrl('filter', null, null);
-        return "object.setUrl('{$url}').load()";
+        $url = $this->getUrl()->getUrl('filter', 'attribute', null);
+        echo "object.setForm(this).setUrl('{$url}').load()";
     }
 
     public function getAddNewUrl()
     {
         $url = $this->getUrl()->getUrl('edit');
-        return "object.setUrl('{$url}').load()";
+        echo "object.setUrl('{$url}').load()";
     }
 }

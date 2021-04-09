@@ -83,7 +83,20 @@ class Grid extends \Block\Core\Grid
             'class' => 'btn btn-success btn-sm',
             'ajax' => true
         ]);
+
+        $this->addActions('addCart', [
+            'label' => 'AddToCart',
+            'method' => 'getAddCartUrl',
+            'class' => 'btn btn-primary btn-sm',
+            'ajax' => true
+        ]);
         return $this;
+    }
+
+    public function getAddCartUrl($row)
+    {
+        $url = $this->getUrl()->getUrl('addToCart', 'Cart', ['id' => $row->id]);
+        return "object.setUrl('{$url}').load()";
     }
 
     public function getEditUrl($row)
@@ -111,6 +124,6 @@ class Grid extends \Block\Core\Grid
     public function getAddNewUrl()
     {
         $url = $this->getUrl()->getUrl('edit');
-        return "object.setUrl('{$url}').load()";
+        echo "object.setUrl('{$url}').load()";
     }
 }

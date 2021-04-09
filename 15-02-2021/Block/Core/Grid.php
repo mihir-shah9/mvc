@@ -105,7 +105,7 @@ class Grid extends \Block\Core\Template
 
     public function getButtonUrl($methodName)
     {
-        return $this->$methodName;
+        $this->$methodName();
     }
 
     public function setFilter($filter = null)

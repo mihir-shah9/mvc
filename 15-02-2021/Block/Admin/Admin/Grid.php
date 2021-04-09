@@ -5,9 +5,22 @@ namespace Block\Admin\Admin;
 \Mage::loadFileByClassName('Block\Core\Grid');
 class Grid extends \Block\Core\Grid
 {
+    protected $filter = null;
     public function prepareCollection()
     {
         $admin = \Mage::getModel('Model\Admin');
+
+        $query = "SELECT * FROM admin";
+        if ($this->getFilter()->hasFilters()) {
+            $query .= " WHERE 1 = 1";
+            foreach ($this->getFilter()->getFilters() as $type => $filters) {
+                if ($type == 'text') {
+                    foreach ($filters as $key => $value) {
+                        $query .= " AND (`{$key}` LIKE '%{$value}%')";
+                    }
+                }
+            }
+        }
         $collection = $admin->fetchAll();
         $this->setCollection($collection);
         return $this;
@@ -80,12 +93,23 @@ class Grid extends \Block\Core\Grid
             'method' => 'getAddNewUrl',
             'ajax' => true
         ]);
+        $this->addButtons('addfilter', [
+            'label' => 'Add Filter',
+            'method' => 'getaddFilterUrl',
+            'ajax' => true
+        ]);
         return $this;
+    }
+
+    public function getaddFilterUrl()
+    {
+        $url = $this->getUrl()->getUrl('filter', 'admin', null);
+        echo "object.setForm(this).setUrl('{$url}').load()";
     }
 
     public function getAddNewUrl()
     {
         $url = $this->getUrl()->getUrl('edit');
-        return "object.setUrl('{$url}').load()";
+        echo "object.setUrl('{$url}').load()";
     }
 }

@@ -3,7 +3,7 @@
 namespace Model;
 
 \Mage::loadFileByClassName('Model\Core\Table');
-class Address extends \Model\Core\Table
+class Address extends Core\Table
 {
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;

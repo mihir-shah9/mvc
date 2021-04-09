@@ -17,6 +17,9 @@ class Filter extends Session
             return $value;
         }, $filters));
         $this->filters = $filters;
+        return $this;
+        // print_r($this->filters);
+        // die();
     }
 
     public function getFilters()
